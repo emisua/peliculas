@@ -12,12 +12,8 @@ function App() {
 	const handleSubmit = (e) => {
 		e.preventDefault()
 		console.log(search)
-		// Forma de conseguir datos no controlada
-		const data = Object.fromEntries(new window.FormData(e.target))
-		const { query } = data
 	}
 	const handleChange = (e) => {
-		// Forma de conseguir datos controlada
 		const value = e.target.value
 		if (value.startsWith(' ')) return
 		setSearch(value)
