@@ -1,7 +1,50 @@
-import { useState } from 'react'
+import { useRef } from 'react'
+import { Movies } from './components/ListOfMovies'
+import { useMovies } from './hooks/useMovies'
+import './app.css'
+import useSearch from './hooks/useSearch'
 
 function App() {
-	return <h1 className='text-3xl bg-slate-500 text-center'>Empezar proyecto</h1>
+	const { mappedMovies: movies } = useMovies()
+	const inputRef = useRef()
+	const { search, setSearch, error } = useSearch()
+
+	const handleSubmit = (e) => {
+		e.preventDefault()
+		console.log(search)
+		// Forma de conseguir datos no controlada
+		const data = Object.fromEntries(new window.FormData(e.target))
+		const { query } = data
+	}
+	const handleChange = (e) => {
+		// Forma de conseguir datos controlada
+		const value = e.target.value
+		if (value.startsWith(' ')) return
+		setSearch(value)
+	}
+
+	return (
+		<div className='page'>
+			<header>
+				<h1>Buscador de Películas</h1>
+				<form onSubmit={handleSubmit}>
+					<input
+						name='query'
+						ref={inputRef}
+						type='text'
+						placeholder='Harry Potter, Avengers, etc...'
+						onChange={handleChange}
+						value={search}
+					/>
+					{error && <p style={{ color: 'red' }}>{error}</p>}
+					<button type='submit'>Buscar pelicula</button>
+				</form>
+			</header>
+			<main>
+				<Movies movies={movies} />
+			</main>
+		</div>
+	)
 }
 
 export default App
