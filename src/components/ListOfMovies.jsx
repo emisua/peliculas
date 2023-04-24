@@ -1,9 +1,9 @@
 import Movie from './Movie'
 
 const ListOfMovies = ({ movies }) => (
-	<ul>
+	<ul className='movies'>
 		{movies?.map((movie) => (
-			<li key={movie.id}>
+			<li key={movie.id} className='movie'>
 				<Movie movie={movie} />
 			</li>
 		))}

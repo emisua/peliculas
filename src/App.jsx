@@ -1,17 +1,15 @@
-import { useRef } from 'react'
 import { Movies } from './components/ListOfMovies'
 import { useMovies } from './hooks/useMovies'
 import './app.css'
 import useSearch from './hooks/useSearch'
 
 function App() {
-	const { mappedMovies: movies } = useMovies()
-	const inputRef = useRef()
-	const { search, setSearch, error } = useSearch()
+	const { search, setSearch, error, isFirstInput } = useSearch()
+	const { movies, getMovies, loading } = useMovies({ search })
 
 	const handleSubmit = (e) => {
 		e.preventDefault()
-		console.log(search)
+		getMovies()
 	}
 	const handleChange = (e) => {
 		const value = e.target.value
@@ -26,7 +24,7 @@ function App() {
 				<form onSubmit={handleSubmit}>
 					<input
 						name='query'
-						ref={inputRef}
+						ref={isFirstInput}
 						type='text'
 						placeholder='Harry Potter, Avengers, etc...'
 						onChange={handleChange}
@@ -36,9 +34,7 @@ function App() {
 					<button type='submit'>Buscar pelicula</button>
 				</form>
 			</header>
-			<main>
-				<Movies movies={movies} />
-			</main>
+			<main>{loading ? <p>Buscando...</p> : <Movies movies={movies} />}</main>
 		</div>
 	)
 }
